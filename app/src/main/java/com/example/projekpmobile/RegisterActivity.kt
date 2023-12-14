@@ -25,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Initialize FirebaseAuth and DatabaseReference
         firebaseAuth = FirebaseAuth.getInstance()
-        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://simplelogin-4bd3d-default-rtdb.firebaseio.com/")
+        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("-")
 
         // Find references to the views
         emailEditText = findViewById(R.id.txt3)
