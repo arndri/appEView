@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39342342027",
+    "project_id": "simplelogin-4bd3d",
+    "storage_bucket": "simplelogin-4bd3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39342342027:android:cdd38af5890a869cec798e",
+        "android_client_info": {
+          "package_name": "com.example.projekpmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOlIIBhVO8Z1afZHJSdbWC_1aHD_KyyFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

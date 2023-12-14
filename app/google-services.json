@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499120518165",
+    "project_id": "projek-p-mobile",
+    "storage_bucket": "projek-p-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499120518165:android:b0ae0f8295c90bea7e0a1c",
+        "android_client_info": {
+          "package_name": "com.example.projekpmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfpzijLJRbosjIatoqbgN6In5Z_aOqziE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
