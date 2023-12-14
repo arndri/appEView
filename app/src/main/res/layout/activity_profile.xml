@@ -12,4 +12,15 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <!-- ListView to display the list of pins -->
+    <ListView
+        android:id="@+id/listViewPins"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textViewUsername"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 </RelativeLayout>

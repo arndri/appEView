@@ -242,9 +242,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         val alertDialog = AlertDialog.Builder(this)
             .setTitle("Pin Information")
             .setView(dialogView)
-            .setPositiveButton("OK") { _, _ ->
-                // Handle OK button click if needed
-            }
             .create()
 
         alertDialog.show()
