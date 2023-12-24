@@ -2,5 +2,5 @@
     <string name="app_name">WIVEN</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="google_map_api">AIzaSyB27fkrwozR9OncZT5MKak7tmUCHkb3f78</string>
+    <string name="google_map_api">---</string>
 </resources>
