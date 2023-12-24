@@ -28,8 +28,7 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         createAccountTextView = findViewById(R.id.txt_create)
 
-        // Set OnClickListener for the Login button
-        loginButton.setOnClickListener { // Handle the click event
+        loginButton.setOnClickListener {
             onLoginButtonClick()
         }
         createAccountTextView.setOnClickListener {
@@ -56,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish() // Close the LoginActivity
                 } else {
-                    // If login fails, show an error message
                     Toast.makeText(this, "Login failed. ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }

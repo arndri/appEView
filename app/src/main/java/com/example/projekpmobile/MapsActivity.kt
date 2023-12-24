@@ -2,7 +2,9 @@ package com.example.projekpmobile
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +15,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.projekpmobile.databinding.ActivityMapsBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -42,38 +48,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         val profileButton = findViewById<ImageButton>(R.id.profileButton)
         profileButton.setOnClickListener {
-            // Open the ProfileActivity when the profile button is clicked
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         // Set a listener for when the user clicks on the map
         mMap.setOnMapClickListener(this)
         mMap.setOnMarkerClickListener(this)
-        // Move the camera to a default location (e.g., Sydney)
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            getCurrentLocationAndMoveCamera()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        }
+
         mMap.uiSettings.isZoomControlsEnabled = true
 
         fetchPinsAndAddMarkers()
@@ -82,7 +88,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
     override fun onMapClick(latLng: LatLng) {
         // Add a marker at the clicked location
         showAddPinDialog(latLng)
-        // Display the coordinates in a Toast
         showToast("Clicked\nLat: ${latLng.latitude}, Lng: ${latLng.longitude}")
     }
 
@@ -245,6 +250,69 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
             .create()
 
         alertDialog.show()
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Location permission granted, get the location and move the camera
+                getCurrentLocationAndMoveCamera()
+            } else {
+                // Location permission denied, handle accordingly
+                showToast("Location permission denied.")
+            }
+        }
+    }
+    private fun getCurrentLocationAndMoveCamera() {
+        // Check for location permissions
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permissions are granted, proceed to get the location
+            getAndMoveCamera()
+        } else {
+            // Request location permissions
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    private fun getAndMoveCamera() {
+        val fusedLocationClient: FusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(this)
+
+        try {
+            // Get the last known location
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        // Get the current user location
+                        val userLatLng = LatLng(location.latitude, location.longitude)
+
+                        // Move the map camera to the user's location
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLng))
+                    } else {
+                        showToast("Unable to get current location.")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    showToast("Error getting current location: ${e.message}")
+                }
+        } catch (e: SecurityException) {
+            showToast("Location permission not granted.")
+        }
+    }
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }
 

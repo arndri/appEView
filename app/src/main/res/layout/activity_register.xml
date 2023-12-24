@@ -19,16 +19,16 @@
     <ImageView
         android:layout_below="@+id/L_img_0"
         android:id="@+id/img1"
-        android:layout_width="201dp"
-        android:layout_height="255dp"
+        android:layout_width="250sp"
+        android:layout_height="255sp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/gambar1"></ImageView>
+        android:src="@drawable/logo1"></ImageView>
     <TextView
         android:id="@+id/txt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="EVIEW"
+        android:text="Wiven"
         android:layout_below="@+id/img1"
         android:textSize="18sp"
         android:textColor="@color/white"
